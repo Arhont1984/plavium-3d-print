@@ -8,7 +8,7 @@ import sitemap from '@astrojs/sitemap';
 const isGhPages = process.env.GITHUB_PAGES === 'true';
 
 export default defineConfig({
-  site: isGhPages ? 'https://<ваш-github-логин>.github.io' : 'https://3dtseh.ru',
-  base: isGhPages ? '/site-3d-print' : '/',
+  site: isGhPages ? 'https://arhont1984.github.io' : 'https://plavium.ru',
+  base: isGhPages ? '/plavium-3d-print' : '/',
   integrations: [sitemap()],
 });

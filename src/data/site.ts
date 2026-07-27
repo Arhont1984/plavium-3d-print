@@ -1,13 +1,15 @@
 // Единая точка правды по реквизитам компании.
-// ЗАПОЛНИТЕ реальными данными перед публикацией — сейчас здесь заглушки.
+// ЗАПОЛНИТЕ реальными данными перед публикацией — сейчас здесь заглушки (кроме brandName —
+// подтверждено бренд-макетом из Marketplace_Disign_01_2025).
 export const site = {
-  brandName: "3D Цех",
+  brandName: "ПЛАВИУМ",
+  brandNameLatin: "Plavium",
   tagline: "3D-печать технических деталей и художественных фигурок",
   phoneDisplay: "+7 (900) 000-00-00",
   phoneHref: "tel:+79000000000",
-  telegram: "https://t.me/tseh3d_bot",
+  telegram: "https://t.me/plavium_bot",
   whatsapp: "https://wa.me/70000000000",
-  email: "info@3dtseh.ru",
+  email: "info@plavium.ru",
   city: "Москва",
   legalName: "ИП Иванов Иван Иванович", // заменить на реальные данные
   inn: "000000000000", // заменить
@@ -16,5 +18,5 @@ export const site = {
   workHours: "Пн–Сб с 09:00 до 20:00",
   workExperience: "Более 1 года на рынке 3D-печати",
   maxBuildSize: "50 × 50 см",
-  siteUrl: "https://3dtseh.ru", // заменить на реальный домен, когда определитесь с хостингом
+  siteUrl: "https://plavium.ru", // заменить на реальный домен, когда определитесь с хостингом
 };

@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-Host: 3dtseh.ru
-Sitemap: https://3dtseh.ru/sitemap-index.xml
+Host: plavium.ru
+Sitemap: https://plavium.ru/sitemap-index.xml

@@ -46,31 +46,25 @@ const faqItems = [
 ---
 
 <BaseLayout
-  title="3D-печать деталей и фигурок на заказ в Москве — FDM и фотополимер | 3D Цех"
+  title="3D-печать деталей и фигурок на заказ в Москве — FDM и фотополимер | ПЛАВИУМ"
   description="3D-печать технических деталей (до 50×50 см) и художественных фигурок. Два типа принтеров — FDM и фотополимер. Берёмся за крупные партии. Более 1 года на рынке. Оставьте заявку — посчитаем стоимость."
   canonicalPath="/"
 >
   <!-- HERO -->
   <section class="hero">
-    <div class="container hero__inner">
-      <div class="hero__text">
+    <div class="container">
+      <div class="hero__text text-center">
         <span class="eyebrow">3D-печать на заказ</span>
         <h1>3D-печать технических деталей и художественных фигурок</h1>
         <p class="hero__sub">
-          FDM и фотополимерная печать. Детали до {site.maxBuildSize}. Единичные заказы и крупные партии.
-          {site.workExperience}.
+          FDM и фотополимерная печать. Детали до {site.maxBuildSize}. Единичные заказы и крупные партии. {site.workExperience}.
         </p>
         <div class="hero__actions">
           <a href="#zayavka" class="btn btn--orange">Оставить заявку</a>
           <a href={url("/portfolio/")} class="btn btn--outline">Смотреть портфолио</a>
         </div>
       </div>
-      <div class="hero__media" aria-hidden="true">
-        <div class="placeholder-box placeholder-box--dark hero__media-placeholder">
-          <span>Фото цеха / принтеров / готовых изделий</span>
-          <small>Замените плейсхолдер на реальные фото производства</small>
-        </div>
-      </div>
+      <img src={url("/brand/hero-banner.webp")} alt="ПЛАВИУМ" class="hero__banner" width="1400" height="318" />
     </div>
   </section>
 
@@ -204,11 +198,9 @@ const faqItems = [
     color: var(--color-white);
     padding: 64px 0;
   }
-  .hero__inner {
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 40px;
-    align-items: center;
+  .hero__text {
+    max-width: 780px;
+    margin: 0 auto;
   }
   .hero__text h1 {
     font-size: 2.4rem;
@@ -221,10 +213,17 @@ const faqItems = [
     display: flex;
     gap: 16px;
     margin-top: 24px;
+    justify-content: center;
     flex-wrap: wrap;
   }
-  .hero__media-placeholder {
-    aspect-ratio: 4 / 3;
+  .hero__banner {
+    display: block;
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+    margin: 48px auto 0;
+    border-radius: var(--radius);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
   }
   .trust-icon {
     font-size: 2.2rem;
@@ -263,7 +262,7 @@ const faqItems = [
     align-items: center;
   }
   @media (max-width: 900px) {
-    .hero__inner, .lead-block, .batch {
+    .lead-block, .batch {
       grid-template-columns: 1fr;
     }
     .hero__text h1 {

@@ -1,19 +1,21 @@
 :root {
-  --color-dark: #14161e;
-  --color-dark-2: #1c1f2b;
-  --color-dark-3: #262b3a;
-  --color-violet: #7c5cff;
-  --color-violet-dark: #6444e0;
-  --color-orange: #ff7a30;
-  --color-orange-dark: #e6621d;
+  /* Палитра «Плавиум»: тёмно-синий чертёж (blueprint) + тёплое золото + кремовая бумага.
+     Названия переменных исторические (--color-orange/--color-violet), значения — брендовые. */
+  --color-dark: #1b2c4a;
+  --color-dark-2: #16233c;
+  --color-dark-3: #22375c;
+  --color-violet: #3a5f9e;
+  --color-violet-dark: #2c4a7d;
+  --color-orange: #c9962e;
+  --color-orange-dark: #a97717;
   --color-white: #ffffff;
-  --color-bg: #f5f6fb;
-  --color-text: #191b26;
-  --color-text-muted: #5c6178;
-  --color-text-on-dark: #c7c9db;
-  --color-border: #e3e4ef;
+  --color-bg: #f6efe0;
+  --color-text: #2a2620;
+  --color-text-muted: #6b5f4a;
+  --color-text-on-dark: #d9c9a8;
+  --color-border: #e6dcc4;
   --radius: 16px;
-  --shadow: 0 10px 30px rgba(20, 22, 30, 0.08);
+  --shadow: 0 10px 30px rgba(42, 30, 10, 0.1);
   --container: 1180px;
   --font: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
@@ -69,9 +71,23 @@ p {
   color: var(--color-text-on-dark);
 }
 
-.section--dark h2,
-.section--dark h3 {
+.section--dark h2 {
   color: var(--color-white);
+}
+
+/* .card всегда белая, независимо от секции — весь текст внутри читаем как на светлом фоне,
+   иначе он наследует светлый цвет тёмной секции и становится невидимым/нечитаемым */
+.section--dark .card {
+  color: var(--color-text);
+}
+
+.section--dark .card h2,
+.section--dark .card h3 {
+  color: var(--color-text);
+}
+
+.section--dark .card .muted {
+  color: var(--color-text-muted);
 }
 
 .btn {
@@ -96,7 +112,7 @@ p {
 .btn--orange {
   background: var(--color-orange);
   color: var(--color-white);
-  box-shadow: 0 8px 20px rgba(255, 122, 48, 0.35);
+  box-shadow: 0 8px 20px rgba(201, 150, 46, 0.35);
 }
 
 .btn--orange:hover {
@@ -106,7 +122,7 @@ p {
 .btn--violet {
   background: var(--color-violet);
   color: var(--color-white);
-  box-shadow: 0 8px 20px rgba(124, 92, 255, 0.35);
+  box-shadow: 0 8px 20px rgba(58, 95, 158, 0.35);
 }
 
 .btn--violet:hover {

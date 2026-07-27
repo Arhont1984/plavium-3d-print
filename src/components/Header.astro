@@ -5,9 +5,7 @@ import { url } from "../lib/url";
 
 <header class="header">
   <div class="container header__inner">
-    <a href={url("/")} class="header__logo">
-      <span class="header__logo-icon">🧊</span> {site.brandName}
-    </a>
+    <a href={url("/")} class="header__logo">{site.brandName}</a>
     <nav class="header__nav">
       <a href={url("/#uslugi")}>Услуги</a>
       <a href={url("/oborudovanie/")}>Оборудование</a>
@@ -39,9 +37,10 @@ import { url } from "../lib/url";
   }
   .header__logo {
     font-weight: 800;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
+    letter-spacing: 0.03em;
     text-decoration: none;
-    color: var(--color-white);
+    color: var(--color-orange);
     white-space: nowrap;
   }
   .header__nav {
