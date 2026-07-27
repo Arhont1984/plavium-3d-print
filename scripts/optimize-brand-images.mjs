@@ -1,7 +1,12 @@
 import sharp from "sharp";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
 
-const SRC = "D:/projects/3d_print/Marketplace_Disign_01_2025/OUT";
-const OUT = "D:/II/Claude/Sitе_3D_print/public/brand";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Исходники бренд-макета лежат внутри репозитория (brand-source/), не во внешней папке —
+// см. brand-source/README.md. Раньше скрипт указывал на D:/projects/3d_print/... вне проекта.
+const SRC = path.resolve(__dirname, "../brand-source");
+const OUT = path.resolve(__dirname, "../public/brand");
 
 await sharp(`${SRC}/crop.png`)
   .resize({ width: 1400 })
