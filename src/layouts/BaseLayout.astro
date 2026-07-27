@@ -1,0 +1,75 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FloatingContact from "../components/FloatingContact.astro";
+import { site } from "../data/site";
+import { url } from "../lib/url";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath: string;
+  noindex?: boolean;
+}
+
+const isGhPages = process.env.GITHUB_PAGES === "true";
+const { title, description, canonicalPath, noindex = isGhPages } = Astro.props;
+const canonicalUrl = new URL(url(canonicalPath), Astro.site ?? site.siteUrl).toString();
+
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: site.brandName,
+  description: `${site.tagline}. ${site.workExperience}. Технические детали и художественные фигурки, FDM и фотополимерная печать, крупные партии.`,
+  image: `${site.siteUrl}/og-cover.jpg`,
+  telephone: site.phoneDisplay,
+  email: site.email,
+  areaServed: [
+    { "@type": "City", name: "Москва" },
+    { "@type": "Country", name: "Россия" },
+  ],
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: site.city,
+    addressCountry: "RU",
+  },
+  openingHours: "Mo-Sa 09:00-20:00",
+  url: site.siteUrl,
+};
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content="ru_RU" />
+
+    <link rel="icon" href={url("/favicon.svg")} type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <FloatingContact />
+  </body>
+</html>

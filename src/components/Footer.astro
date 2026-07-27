@@ -1,0 +1,98 @@
+---
+import { site } from "../data/site";
+import { services } from "../data/services";
+import { url } from "../lib/url";
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer" id="kontakty">
+  <div class="container grid grid--4 footer__grid">
+    <div>
+      <div class="footer__logo">{site.brandName}</div>
+      <p class="muted">{site.tagline}. {site.workExperience}.</p>
+      <p><a href={site.phoneHref} class="footer__phone">{site.phoneDisplay}</a></p>
+      <p class="muted">{site.workHours}</p>
+      <p class="muted">{site.address}</p>
+    </div>
+    <div>
+      <div class="footer__title">Услуги</div>
+      <ul class="footer__list">
+        {services.map((s) => (
+          <li><a href={url(`/uslugi/${s.slug}/`)}>{s.shortTitle}</a></li>
+        ))}
+        <li><a href={url("/oborudovanie/")}>Оборудование: FDM и фотополимер</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__title">Компания</div>
+      <ul class="footer__list">
+        <li><a href={url("/portfolio/")}>Портфолио</a></li>
+        <li><a href={url("/#zayavka")}>Оставить заявку</a></li>
+        <li><a href={url("/politika-konfidentsialnosti/")}>Политика конфиденциальности</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__title">Связаться</div>
+      <ul class="footer__list">
+        <li><a href={site.telegram} target="_blank" rel="nofollow noopener">Telegram</a></li>
+        <li><a href={site.whatsapp} target="_blank" rel="nofollow noopener">WhatsApp</a></li>
+        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer__bottom">
+    <p class="muted">
+      © {currentYear} {site.brandName}. {site.legalName}, ИНН {site.inn}, ОГРНИП {site.ogrn}.
+      Сайт не является публичной офертой.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-dark-2);
+    color: var(--color-text-on-dark);
+    padding: 56px 0 24px;
+  }
+  .footer__grid {
+    margin-bottom: 40px;
+  }
+  .footer__logo {
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--color-white);
+    margin-bottom: 12px;
+  }
+  .footer__phone {
+    color: var(--color-orange);
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .footer__title {
+    color: var(--color-white);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .footer__list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px;
+  }
+  .footer__list li {
+    margin-bottom: 8px;
+  }
+  .footer__list a {
+    color: var(--color-text-on-dark);
+    text-decoration: none;
+    font-size: 0.92rem;
+  }
+  .footer__list a:hover {
+    color: var(--color-white);
+  }
+  .footer__bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 20px;
+    font-size: 0.8rem;
+  }
+</style>

@@ -1,0 +1,138 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import LeadForm from "../components/LeadForm.astro";
+import { equipment } from "../data/equipment";
+import { url } from "../lib/url";
+---
+
+<BaseLayout
+  title="FDM или фотополимерная печать — что выбрать | 3D Цех"
+  description="Сравнение FDM и фотополимерной (SLA/LCD) 3D-печати: прочность, детализация, материалы, для каких задач подходит каждая технология. Подберём принтер под вашу задачу."
+  canonicalPath="/oborudovanie/"
+>
+  <section class="section">
+    <div class="container">
+      <p class="breadcrumbs">
+        <a href={url("/")}>Главная</a> / Оборудование
+      </p>
+      <h1>FDM или фотополимерная печать: что выбрать</h1>
+      <p class="muted" style="max-width:720px;">
+        У нас есть оба типа принтеров — FDM и фотополимерные. Мы подбираем технологию под вашу
+        задачу, а не подгоняем задачу под то, что есть в наличии.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="container">
+      <div class="grid grid--2">
+        {equipment.map((e) => (
+          <div class="card equipment-card">
+            <div class="trust-icon">{e.icon}</div>
+            <h2>{e.fullName}</h2>
+            <p class="muted">{e.description}</p>
+            <h3>Хорошо подходит для:</h3>
+            <ul>
+              {e.bestFor.map((b) => <li>{b}</li>)}
+            </ul>
+            <h3>Материалы:</h3>
+            <p class="muted">{e.materials.join(", ")}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="text-center">Сравнение технологий</h2>
+      <div class="table-wrap">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Параметр</th>
+              <th>FDM</th>
+              <th>Фотополимер</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Детализация</td>
+              <td>Средняя</td>
+              <td>Очень высокая</td>
+            </tr>
+            <tr>
+              <td>Прочность</td>
+              <td>Высокая</td>
+              <td>Средняя (есть прочные смолы)</td>
+            </tr>
+            <tr>
+              <td>Максимальный размер детали</td>
+              <td>До 50×50 см</td>
+              <td>Ограничен объёмом ванны принтера</td>
+            </tr>
+            <tr>
+              <td>Гладкость поверхности</td>
+              <td>Видны слои печати</td>
+              <td>Гладкая, почти без слоёв</td>
+            </tr>
+            <tr>
+              <td>Типичное применение</td>
+              <td>Технические детали, прототипы, крупные изделия</td>
+              <td>Фигурки, миниатюры, ювелирные модели</td>
+            </tr>
+            <tr>
+              <td>Стоимость крупных партий</td>
+              <td>Ниже на больших объёмах</td>
+              <td>Выше из-за детализации и постобработки</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark" id="zayavka">
+    <div class="container">
+      <div class="card" style="max-width:520px;margin:0 auto;">
+        <LeadForm
+          heading="Не знаете, что выбрать?"
+          subheading="Опишите задачу — подберём технологию и материал сами"
+        />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .equipment-card h3 {
+    margin-top: 16px;
+    font-size: 1rem;
+  }
+  .table-wrap {
+    overflow-x: auto;
+    margin-top: 32px;
+  }
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--color-white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    min-width: 560px;
+  }
+  .compare-table th,
+  .compare-table td {
+    padding: 14px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .compare-table th {
+    background: var(--color-dark);
+    color: var(--color-white);
+  }
+  .compare-table tr:last-child td {
+    border-bottom: none;
+  }
+</style>

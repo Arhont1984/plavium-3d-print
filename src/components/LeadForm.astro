@@ -1,0 +1,172 @@
+---
+import { url } from "../lib/url";
+
+interface Props {
+  heading?: string;
+  subheading?: string;
+  ctaLabel?: string;
+  compact?: boolean;
+}
+
+const {
+  heading = "Оставьте заявку на печать",
+  subheading = "Опишите задачу — посчитаем стоимость и сроки, ответим в течение рабочего дня",
+  ctaLabel = "Оставить заявку",
+  compact = false,
+} = Astro.props;
+---
+
+<form class:list={["lead-form", { "lead-form--compact": compact }]} data-lead-form>
+  <div class="lead-form__head">
+    <h3>{heading}</h3>
+    {subheading && <p class="muted">{subheading}</p>}
+  </div>
+
+  <div class="lead-form__row">
+    <label class="visually-hidden" for="lead-name">Имя</label>
+    <input id="lead-name" name="name" type="text" placeholder="Ваше имя" required autocomplete="name" />
+  </div>
+
+  <div class="lead-form__row lead-form__row--contact">
+    <select name="contactMethod" aria-label="Способ связи" data-contact-method>
+      <option value="phone">Телефон</option>
+      <option value="telegram">Telegram</option>
+      <option value="whatsapp">WhatsApp</option>
+      <option value="email">Email</option>
+    </select>
+    <input
+      id="lead-contact"
+      name="contact"
+      type="text"
+      placeholder="+7 (___) ___-__-__"
+      required
+      data-contact-input
+    />
+  </div>
+
+  {!compact && (
+    <div class="lead-form__row">
+      <label class="visually-hidden" for="lead-comment">Что нужно напечатать</label>
+      <textarea
+        id="lead-comment"
+        name="comment"
+        rows="3"
+        placeholder="Что печатаем: деталь/фигурка, материал, тираж, размеры (если знаете)"
+      ></textarea>
+    </div>
+  )}
+
+  <label class="lead-form__consent">
+    <input type="checkbox" name="consent" required />
+    <span>
+      Согласен на <a href={url("/politika-konfidentsialnosti/")} target="_blank">обработку персональных данных</a>
+    </span>
+  </label>
+
+  <!-- honeypot против ботов -->
+  <input type="text" name="company" class="visually-hidden" tabindex="-1" autocomplete="off" />
+
+  <button type="submit" class="btn btn--orange lead-form__submit">{ctaLabel}</button>
+
+  <p class="lead-form__success" data-lead-success hidden>
+    Заявка принята! Мы свяжемся с вами в ближайшее время.
+  </p>
+</form>
+
+<style>
+  .lead-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .lead-form__head h3 {
+    margin-bottom: 4px;
+  }
+  .lead-form__row input,
+  .lead-form__row select,
+  .lead-form__row textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    font-family: inherit;
+    font-size: 1rem;
+    resize: vertical;
+  }
+  .lead-form__row--contact {
+    display: flex;
+    gap: 8px;
+  }
+  .lead-form__row--contact select {
+    flex: 0 0 130px;
+  }
+  .lead-form__row--contact input {
+    flex: 1;
+  }
+  .lead-form__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+  }
+  .lead-form__consent a {
+    color: var(--color-text-muted);
+    text-decoration: underline;
+  }
+  .lead-form__submit {
+    width: 100%;
+  }
+  .lead-form__success {
+    color: #1a7a3c;
+    font-weight: 600;
+    text-align: center;
+  }
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+</style>
+
+<script>
+  // ВАЖНО: сейчас форма только показывает успех локально.
+  // Когда определитесь с хостингом/CRM, замените обработчик на реальный
+  // POST-запрос (например, к Telegram Bot API, amoCRM/Bitrix24 вебхуку или Formspree).
+  function initLeadForms() {
+    document.querySelectorAll<HTMLFormElement>("[data-lead-form]").forEach((form) => {
+      const methodSelect = form.querySelector<HTMLSelectElement>("[data-contact-method]");
+      const contactInput = form.querySelector<HTMLInputElement>("[data-contact-input]");
+
+      const placeholders: Record<string, string> = {
+        phone: "+7 (___) ___-__-__",
+        telegram: "@username",
+        whatsapp: "+7 (___) ___-__-__",
+        email: "you@mail.ru",
+      };
+
+      methodSelect?.addEventListener("change", () => {
+        if (contactInput && methodSelect.value in placeholders) {
+          contactInput.placeholder = placeholders[methodSelect.value];
+        }
+      });
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const honeypot = form.querySelector<HTMLInputElement>('[name="company"]');
+        if (honeypot && honeypot.value) return; // бот
+
+        const success = form.querySelector<HTMLParagraphElement>("[data-lead-success]");
+        form.querySelectorAll("input, select, textarea, button").forEach((el) => {
+          (el as HTMLInputElement | HTMLButtonElement).disabled = true;
+        });
+        if (success) success.hidden = false;
+      });
+    });
+  }
+
+  initLeadForms();
+</script>

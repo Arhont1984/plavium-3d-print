@@ -1,0 +1,273 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import LeadForm from "../components/LeadForm.astro";
+import Faq from "../components/Faq.astro";
+import PortfolioCard from "../components/PortfolioCard.astro";
+import { site } from "../data/site";
+import { services } from "../data/services";
+import { equipment } from "../data/equipment";
+import { url } from "../lib/url";
+import { getCollection } from "astro:content";
+
+const featuredCases = (await getCollection("portfolio"))
+  .filter((c) => c.data.featured)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const trustPoints = [
+  { icon: "🏆", title: site.workExperience, text: "Стабильно выполняем заказы для частных клиентов и бизнеса." },
+  { icon: "📦", title: "Крупные партии", text: "Берёмся за мелкосерийное и серийное производство — от 1 до сотен изделий." },
+  { icon: "🖨️", title: "2 типа печати", text: "FDM и фотополимер — подбираем технологию под задачу, а не наоборот." },
+  { icon: "📐", title: `До ${site.maxBuildSize}`, text: "Максимальный размер печатаемой детали на нашем оборудовании." },
+];
+
+const faqItems = [
+  {
+    question: "Какой максимальный размер детали вы можете напечатать?",
+    answer: `Максимальный размер одной детали — до ${site.maxBuildSize}. Более крупные изделия печатаем частями со сборкой.`,
+  },
+  {
+    question: "Печатаете ли вы крупные партии?",
+    answer: "Да, работаем как с единичными заказами, так и с мелкосерийным и серийным производством — от штучных образцов до сотен изделий.",
+  },
+  {
+    question: "В чём разница между FDM и фотополимерной печатью?",
+    answer: "FDM печатает пластиковой нитью — подходит для прочных технических деталей и крупных изделий. Фотополимер печатает жидкой смолой — даёт высокую детализацию и гладкую поверхность, подходит для фигурок и мелких точных деталей.",
+  },
+  {
+    question: "Можно ли напечатать изделие по своему чертежу или 3D-модели?",
+    answer: "Да, принимаем готовые 3D-модели (STL, OBJ, STEP) и чертежи. Если модели нет, можем помочь с подготовкой по фото, эскизу или образцу.",
+  },
+  {
+    question: "Сколько времени занимает изготовление заказа?",
+    answer: "Срок зависит от размера, технологии и тиража — от 1 дня для небольших единичных изделий до нескольких недель для крупных партий. Точный срок называем после оценки заявки.",
+  },
+];
+---
+
+<BaseLayout
+  title="3D-печать деталей и фигурок на заказ в Москве — FDM и фотополимер | 3D Цех"
+  description="3D-печать технических деталей (до 50×50 см) и художественных фигурок. Два типа принтеров — FDM и фотополимер. Берёмся за крупные партии. Более 1 года на рынке. Оставьте заявку — посчитаем стоимость."
+  canonicalPath="/"
+>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <div class="hero__text">
+        <span class="eyebrow">3D-печать на заказ</span>
+        <h1>3D-печать технических деталей и художественных фигурок</h1>
+        <p class="hero__sub">
+          FDM и фотополимерная печать. Детали до {site.maxBuildSize}. Единичные заказы и крупные партии.
+          {site.workExperience}.
+        </p>
+        <div class="hero__actions">
+          <a href="#zayavka" class="btn btn--orange">Оставить заявку</a>
+          <a href={url("/portfolio/")} class="btn btn--outline">Смотреть портфолио</a>
+        </div>
+      </div>
+      <div class="hero__media" aria-hidden="true">
+        <div class="placeholder-box placeholder-box--dark hero__media-placeholder">
+          <span>Фото цеха / принтеров / готовых изделий</span>
+          <small>Замените плейсхолдер на реальные фото производства</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <section class="section">
+    <div class="container grid grid--4">
+      {trustPoints.map((t) => (
+        <div class="card text-center">
+          <div class="trust-icon">{t.icon}</div>
+          <h3>{t.title}</h3>
+          <p class="muted">{t.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section section--dark" id="uslugi">
+    <div class="container">
+      <span class="eyebrow text-center" style="display:block;text-align:center;">Что мы печатаем</span>
+      <h2 class="text-center">Два направления — одна команда</h2>
+      <div class="grid grid--2" style="margin-top:32px;">
+        {services.map((s) => (
+          <div class="card service-card">
+            <div class="service-card__icon">{s.icon}</div>
+            <h3>{s.title}</h3>
+            <p class="muted">{s.summary}</p>
+            <ul class="service-card__bullets">
+              {s.bullets.map((b) => <li>{b}</li>)}
+            </ul>
+            <a href={url(`/uslugi/${s.slug}/`)} class="btn btn--dark">Подробнее →</a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- EQUIPMENT -->
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow text-center" style="display:block;text-align:center;">Оборудование</span>
+      <h2 class="text-center">Два типа принтеров — под любую задачу</h2>
+      <div class="grid grid--2" style="margin-top:32px;">
+        {equipment.map((e) => (
+          <div class="card text-center">
+            <div class="trust-icon">{e.icon}</div>
+            <h3>{e.name}</h3>
+            <p class="muted">{e.description}</p>
+          </div>
+        ))}
+      </div>
+      <div class="text-center" style="margin-top:24px;">
+        <a href={url("/oborudovanie/")} class="btn btn--dark">Сравнить FDM и фотополимер →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BATCH PRODUCTION -->
+  <section class="section section--dark">
+    <div class="container batch">
+      <div>
+        <span class="eyebrow">Для бизнеса</span>
+        <h2>Готовы к крупным партиям</h2>
+        <p class="muted">
+          Печатаем не только единичные образцы: берёмся за мелкосерийное и серийное производство —
+          сувенирная продукция для мероприятий, партии деталей для производства, тиражи фигурок
+          для магазинов и настольных игр. Согласуем материал, сроки и цену за тираж.
+        </p>
+        <a href="#zayavka" class="btn btn--orange">Обсудить партию</a>
+      </div>
+      <div class="placeholder-box placeholder-box--dark">
+        <span>📦 Фото упакованной партии изделий</span>
+        <small>Добавьте реальное фото со склада/производства</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO TEASER -->
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow text-center" style="display:block;text-align:center;">Портфолио</span>
+      <h2 class="text-center">Реализованные проекты</h2>
+      <div class="grid grid--3" style="margin-top:32px;">
+        {featuredCases.map((c) => (
+          <PortfolioCard
+            id={c.id}
+            title={c.data.title}
+            client={c.data.client}
+            summary={c.data.summary}
+            category={c.data.category}
+            printerType={c.data.printerType}
+            cover={c.data.cover}
+            draft={c.data.draft}
+          />
+        ))}
+      </div>
+      <div class="text-center" style="margin-top:24px;">
+        <a href={url("/portfolio/")} class="btn btn--dark">Всё портфолио →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEAD FORM -->
+  <section class="section section--dark" id="zayavka">
+    <div class="container">
+      <div class="card lead-block">
+        <div class="lead-block__text">
+          <h2>Оставьте заявку — посчитаем стоимость</h2>
+          <p class="muted">
+            Опишите, что нужно напечатать: деталь или фигурку, материал, примерный размер и тираж.
+            Ответим в течение рабочего дня.
+          </p>
+        </div>
+        <LeadForm />
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <div class="container">
+      <h2 class="text-center">Частые вопросы</h2>
+      <Faq items={faqItems} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    background: var(--color-dark);
+    color: var(--color-white);
+    padding: 64px 0;
+  }
+  .hero__inner {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .hero__text h1 {
+    font-size: 2.4rem;
+  }
+  .hero__sub {
+    color: var(--color-text-on-dark);
+    font-size: 1.1rem;
+  }
+  .hero__actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .hero__media-placeholder {
+    aspect-ratio: 4 / 3;
+  }
+  .trust-icon {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+  }
+  .service-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .service-card__icon {
+    font-size: 2.2rem;
+  }
+  .service-card__bullets {
+    margin: 8px 0 20px;
+    padding-left: 20px;
+    color: var(--color-text-muted);
+  }
+  .service-card__bullets li {
+    margin-bottom: 6px;
+  }
+  .batch {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .batch .placeholder-box {
+    aspect-ratio: 4 / 3;
+  }
+  .lead-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+  @media (max-width: 900px) {
+    .hero__inner, .lead-block, .batch {
+      grid-template-columns: 1fr;
+    }
+    .hero__text h1 {
+      font-size: 1.9rem;
+    }
+  }
+</style>

@@ -1,0 +1,65 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PortfolioCard from "../../components/PortfolioCard.astro";
+import LeadForm from "../../components/LeadForm.astro";
+import { url } from "../../lib/url";
+import { getCollection } from "astro:content";
+
+const cases = (await getCollection("portfolio")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<BaseLayout
+  title="Портфолио — реализованные проекты 3D-печати | 3D Цех"
+  description="Лента выполненных проектов: технические детали и художественные фигурки, единичные заказы и крупные партии для бизнеса."
+  canonicalPath="/portfolio/"
+>
+  <section class="section">
+    <div class="container">
+      <p class="breadcrumbs">
+        <a href={url("/")}>Главная</a> / Портфолио
+      </p>
+      <h1>Портфолио</h1>
+      <p class="muted" style="max-width:720px;">
+        Лента реализованных проектов — от единичных технических деталей до крупных партий
+        фигурок для бизнеса. Часть карточек ниже — черновики-заготовки с примером структуры,
+        которые ещё предстоит заполнить реальными фото и описанием.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      {cases.length > 0 ? (
+        <div class="grid grid--3 portfolio-feed">
+          {cases.map((c) => (
+            <PortfolioCard
+              id={c.id}
+              title={c.data.title}
+              client={c.data.client}
+              summary={c.data.summary}
+              category={c.data.category}
+              printerType={c.data.printerType}
+              cover={c.data.cover}
+              draft={c.data.draft}
+            />
+          ))}
+        </div>
+      ) : (
+        <p class="muted text-center">Пока нет ни одного проекта — добавьте первый в src/content/portfolio/.</p>
+      )}
+    </div>
+  </section>
+
+  <section class="section section--dark" id="zayavka">
+    <div class="container">
+      <div class="card" style="max-width:520px;margin:0 auto;">
+        <LeadForm
+          heading="Хотите похожий проект?"
+          subheading="Опишите задачу — предложим решение и посчитаем стоимость"
+        />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

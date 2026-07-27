@@ -1,0 +1,84 @@
+---
+import { site } from "../data/site";
+import { url } from "../lib/url";
+---
+
+<header class="header">
+  <div class="container header__inner">
+    <a href={url("/")} class="header__logo">
+      <span class="header__logo-icon">🧊</span> {site.brandName}
+    </a>
+    <nav class="header__nav">
+      <a href={url("/#uslugi")}>Услуги</a>
+      <a href={url("/oborudovanie/")}>Оборудование</a>
+      <a href={url("/portfolio/")}>Портфолио</a>
+      <a href={url("/#kontakty")}>Контакты</a>
+    </nav>
+    <div class="header__actions">
+      <a href={site.phoneHref} class="header__phone">{site.phoneDisplay}</a>
+      <a href={url("/#zayavka")} class="btn btn--orange">Оставить заявку</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .header {
+    background: var(--color-dark);
+    color: var(--color-white);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    gap: 24px;
+  }
+  .header__logo {
+    font-weight: 800;
+    font-size: 1.3rem;
+    text-decoration: none;
+    color: var(--color-white);
+    white-space: nowrap;
+  }
+  .header__nav {
+    display: flex;
+    gap: 24px;
+    flex: 1;
+    justify-content: center;
+  }
+  .header__nav a {
+    color: var(--color-text-on-dark);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  .header__nav a:hover {
+    color: var(--color-white);
+  }
+  .header__actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    white-space: nowrap;
+  }
+  .header__phone {
+    color: var(--color-white);
+    text-decoration: none;
+    font-weight: 700;
+  }
+  @media (max-width: 900px) {
+    .header__nav {
+      display: none;
+    }
+    .header__inner {
+      gap: 12px;
+    }
+    .header__phone {
+      display: none;
+    }
+  }
+</style>

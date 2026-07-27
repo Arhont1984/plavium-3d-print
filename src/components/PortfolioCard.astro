@@ -1,0 +1,114 @@
+---
+import { url } from "../lib/url";
+
+interface Props {
+  id: string;
+  title: string;
+  client: string;
+  summary: string;
+  category: "tehnika" | "figurki";
+  printerType: "fdm" | "photopolymer" | "both";
+  cover: string;
+  draft: boolean;
+}
+
+const { id, title, client, summary, category, printerType, cover, draft } = Astro.props;
+
+const categoryLabels: Record<string, string> = {
+  tehnika: "Технические детали",
+  figurki: "Художественные фигурки",
+};
+
+const printerLabels: Record<string, string> = {
+  fdm: "FDM",
+  photopolymer: "Фотополимер",
+  both: "FDM + Фотополимер",
+};
+---
+
+<a href={url(`/portfolio/${id}/`)} class="portfolio-card">
+  {draft && <span class="portfolio-card__badge">Черновик</span>}
+  {cover ? (
+    <img src={cover} alt={title} class="portfolio-card__img" loading="lazy" />
+  ) : (
+    <div class="placeholder-box portfolio-card__img portfolio-card__img--placeholder">
+      <span>📷 Фото проекта</span>
+      <small>Добавьте в public/portfolio/{id}/</small>
+    </div>
+  )}
+  <div class="portfolio-card__body">
+    <div class="portfolio-card__tags">
+      <span class="tag">{categoryLabels[category]}</span>
+      <span class="tag">{printerLabels[printerType]}</span>
+    </div>
+    <h3 class="portfolio-card__title">{title}</h3>
+    <p class="portfolio-card__client muted">Клиент: {client}</p>
+    <p class="portfolio-card__summary muted">{summary}</p>
+  </div>
+</a>
+
+<style>
+  .portfolio-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--color-text);
+    transition: transform 0.15s ease;
+  }
+  .portfolio-card:hover {
+    transform: translateY(-4px);
+  }
+  .portfolio-card__badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 2;
+    background: var(--color-orange);
+    color: var(--color-white);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .portfolio-card__img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+  .portfolio-card__img--placeholder {
+    border-radius: 0;
+    border-width: 0 0 1px;
+  }
+  .portfolio-card__body {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .portfolio-card__tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+  .portfolio-card__title {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  .portfolio-card__client {
+    margin: 0;
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+  .portfolio-card__summary {
+    margin: 4px 0 0;
+    font-size: 0.9rem;
+  }
+</style>

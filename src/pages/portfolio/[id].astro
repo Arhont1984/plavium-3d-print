@@ -1,0 +1,128 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import LeadForm from "../../components/LeadForm.astro";
+import { url } from "../../lib/url";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const cases = await getCollection("portfolio");
+  return cases.map((c) => ({
+    params: { id: c.id },
+    props: { entry: c },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const categoryLabels: Record<string, string> = {
+  tehnika: "Технические детали",
+  figurki: "Художественные фигурки",
+};
+const printerLabels: Record<string, string> = {
+  fdm: "FDM",
+  photopolymer: "Фотополимер",
+  both: "FDM + Фотополимер",
+};
+
+const dateLabel = entry.data.date.toLocaleDateString("ru-RU", { year: "numeric", month: "long" });
+---
+
+<BaseLayout
+  title={`${entry.data.title} — портфолио | 3D Цех`}
+  description={entry.data.summary}
+  canonicalPath={`/portfolio/${entry.id}/`}
+>
+  <section class="section">
+    <div class="container" style="max-width:820px;">
+      <p class="breadcrumbs">
+        <a href={url("/")}>Главная</a> / <a href={url("/portfolio/")}>Портфолио</a> / {entry.data.title}
+      </p>
+
+      {entry.data.draft && (
+        <p class="draft-notice">
+          Черновик — это карточка-заготовка. Замените текст и фото на данные реального проекта
+          в файле <code>src/content/portfolio/{entry.id}.md</code>.
+        </p>
+      )}
+
+      <h1>{entry.data.title}</h1>
+      <div class="case-meta">
+        <span class="tag">{categoryLabels[entry.data.category]}</span>
+        <span class="tag">{printerLabels[entry.data.printerType]}</span>
+        <span class="tag">Клиент: {entry.data.client}</span>
+        <span class="tag">{dateLabel}</span>
+      </div>
+
+      {entry.data.cover ? (
+        <img src={entry.data.cover} alt={entry.data.title} class="case-cover" />
+      ) : (
+        <div class="placeholder-box case-cover">
+          <span>📷 Обложка проекта</span>
+          <small>Добавьте фото в public/portfolio/{entry.id}/ и укажите путь в поле cover</small>
+        </div>
+      )}
+
+      <div class="case-body">
+        <Content />
+      </div>
+
+      {entry.data.images.length > 1 && (
+        <div class="grid grid--3 case-gallery">
+          {entry.data.images.slice(1).map((img) => (
+            <img src={img} alt={entry.data.title} loading="lazy" />
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="section section--dark" id="zayavka">
+    <div class="container">
+      <div class="card" style="max-width:520px;margin:0 auto;">
+        <LeadForm
+          heading="Хотите похожий проект?"
+          subheading="Опишите задачу — предложим решение и посчитаем стоимость"
+        />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .draft-notice {
+    background: #fff4e6;
+    border: 1px solid var(--color-orange);
+    color: #7a4300;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+  }
+  .draft-notice code {
+    font-size: 0.85em;
+  }
+  .case-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .case-cover {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+  }
+  .case-body {
+    line-height: 1.7;
+  }
+  .case-gallery {
+    margin-top: 24px;
+  }
+  .case-gallery img {
+    border-radius: var(--radius);
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+</style>

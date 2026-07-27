@@ -1,0 +1,78 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import LeadForm from "../../components/LeadForm.astro";
+import { site } from "../../data/site";
+import { services } from "../../data/services";
+import { url } from "../../lib/url";
+
+const service = services.find((s) => s.slug === "tehnicheskie-detali")!;
+
+const useCases = [
+  { title: "Прототипы", text: "Быстрая проверка формы и посадки перед серийным производством." },
+  { title: "Функциональные детали", text: "Кронштейны, корпуса, крепления, шестерни, переходники." },
+  { title: "Замена запчастей", text: "Печать снятых с производства или редких деталей по образцу." },
+  { title: "Оснастка и приспособления", text: "Шаблоны, направляющие, кондукторы для производства." },
+];
+---
+
+<BaseLayout
+  title="Печать технических деталей и прототипов на заказ — до 50×50 см | 3D Цех"
+  description="3D-печать технических деталей, прототипов и оснастки на FDM и фотополимерных принтерах. Точные допуски, прочный пластик, детали до 50×50 см, крупные партии."
+  canonicalPath="/uslugi/tehnicheskie-detali/"
+>
+  <section class="section">
+    <div class="container">
+      <p class="breadcrumbs">
+        <a href={url("/")}>Главная</a> / Технические детали
+      </p>
+      <h1>{service.title}</h1>
+      <p class="muted" style="max-width:720px;">{service.summary}</p>
+      <a href="#zayavka" class="btn btn--orange">Оставить заявку</a>
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="container">
+      <h2>Что учитываем при печати деталей</h2>
+      <ul class="grid grid--2" style="list-style:none;padding:0;">
+        {service.bullets.map((b) => (
+          <li class="card">{b}</li>
+        ))}
+      </ul>
+      <p class="muted" style="margin-top:24px;">{service.printers}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="text-center">Для каких задач подходит</h2>
+      <div class="grid grid--4" style="margin-top:32px;">
+        {useCases.map((u) => (
+          <div class="card text-center">
+            <h3>{u.title}</h3>
+            <p class="muted">{u.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section text-center">
+    <div class="container">
+      <h2>Максимальный размер детали — {site.maxBuildSize}</h2>
+      <p class="muted">Более крупные изделия печатаем сборными частями с последующей склейкой/сборкой.</p>
+      <a href={url("/portfolio/")} class="btn btn--dark">Посмотреть примеры работ</a>
+    </div>
+  </section>
+
+  <section class="section section--dark" id="zayavka">
+    <div class="container">
+      <div class="card" style="max-width:520px;margin:0 auto;">
+        <LeadForm
+          heading="Заявка на печать технической детали"
+          subheading="Приложите чертёж или 3D-модель, если есть — это ускорит расчёт"
+        />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

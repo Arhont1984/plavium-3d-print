@@ -1,0 +1,77 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import LeadForm from "../../components/LeadForm.astro";
+import { services } from "../../data/services";
+import { url } from "../../lib/url";
+
+const service = services.find((s) => s.slug === "hudozhestvennye-figurki")!;
+
+const useCases = [
+  { title: "Коллекционные фигурки", text: "Миниатюры для настольных игр, коллекционные статуэтки." },
+  { title: "Сувениры и подарки", text: "Брендированная сувенирная продукция для компаний и мероприятий." },
+  { title: "Декор и интерьер", text: "Скульптуры, элементы декора, детализированные модели." },
+  { title: "Косплей и реквизит", text: "Крупные и мелкие элементы костюмов и реквизита." },
+];
+---
+
+<BaseLayout
+  title="Печать художественных фигурок и сувениров на заказ | 3D Цех"
+  description="Фотополимерная 3D-печать художественных фигурок, статуэток и сувениров с высокой детализацией. Покраска и постобработка, крупные партии для мероприятий и бизнеса."
+  canonicalPath="/uslugi/hudozhestvennye-figurki/"
+>
+  <section class="section">
+    <div class="container">
+      <p class="breadcrumbs">
+        <a href={url("/")}>Главная</a> / Художественные фигурки
+      </p>
+      <h1>{service.title}</h1>
+      <p class="muted" style="max-width:720px;">{service.summary}</p>
+      <a href="#zayavka" class="btn btn--orange">Оставить заявку</a>
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="container">
+      <h2>Что мы предлагаем</h2>
+      <ul class="grid grid--2" style="list-style:none;padding:0;">
+        {service.bullets.map((b) => (
+          <li class="card">{b}</li>
+        ))}
+      </ul>
+      <p class="muted" style="margin-top:24px;">{service.printers}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="text-center">Для каких задач подходит</h2>
+      <div class="grid grid--4" style="margin-top:32px;">
+        {useCases.map((u) => (
+          <div class="card text-center">
+            <h3>{u.title}</h3>
+            <p class="muted">{u.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section text-center">
+    <div class="container">
+      <h2>Печатаем крупными партиями</h2>
+      <p class="muted">Тиражи фигурок для магазинов, мероприятий и корпоративных подарков — от единиц до сотен штук.</p>
+      <a href={url("/portfolio/")} class="btn btn--dark">Посмотреть примеры работ</a>
+    </div>
+  </section>
+
+  <section class="section section--dark" id="zayavka">
+    <div class="container">
+      <div class="card" style="max-width:520px;margin:0 auto;">
+        <LeadForm
+          heading="Заявка на печать фигурки или сувенира"
+          subheading="Приложите референс, скульптинг или 3D-модель, если есть"
+        />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Host: 3dtseh.ru
+Sitemap: https://3dtseh.ru/sitemap-index.xml
